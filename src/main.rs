@@ -4,7 +4,10 @@ use git2::{Repository, BranchType};
 fn main() {
     let repo = match Repository::open(".") {
         Ok(repo) => repo,
-        Err(e) => panic!("failed to open: {}", e),
+        Err(_) => {
+            println!("you must be in a git repository to successfully run this command.");
+            std::process::exit(1);
+        },
     };
 
     let branches = match repo.branches(Option::from(BranchType::Local)) {
@@ -12,19 +15,20 @@ fn main() {
         Err(e) => panic!("failed to load branches: {}", e),
     };
 
-    let selections: Vec<String> = branches.into_iter()
+    let mut selections: Vec<String> = branches.into_iter()
         .map(|branch| {
             branch.unwrap().0.name().unwrap().unwrap().to_string()
         })
         .collect();
 
     if selections.len() == 0 {
-        println!("[No branches] Are you in a git repository?");
+        println!("[no branches] are you in a git repository?");
         std::process::exit(1);
     }
 
+    selections.sort();
     let selection = Select::with_theme(&ColorfulTheme::default())
-        .with_prompt("Switch to:")
+        .with_prompt("switch to:")
         .default(0)
         .items(&selections[..])
         .interact()

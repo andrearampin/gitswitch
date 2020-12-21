@@ -1,8 +1,16 @@
 [package]
 name = "gitswitch"
-version = "0.1.0"
-authors = ["Andrea Rampin <andrea.rampin@uber.com>"]
+description = "A small util for switching git branch."
+version = "0.0.1"
 edition = "2018"
+authors = ["Andrea Rampin <andrea.rampin@uber.com>"]
+keywords = ["cli", "git"]
+categories = ["command-line-interface"]
+license = "MIT"
+homepage = "https://github.com/andrearampin/gitswitch"
+repository = "https://github.com/andrearampin/gitswitch"
+documentation = "https://github.com/andrearampin/gitswitch"
+readme = "README.md"
 
 [dependencies]
 dialoguer = "0.7.1"
