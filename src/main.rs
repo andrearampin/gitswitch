@@ -1,4 +1,4 @@
-use dialoguer::{theme::ColorfulTheme, Select};
+use dialoguer::{theme::ColorfulTheme, Sort};
 use git2::{Repository, BranchType};
 
 fn main() {
@@ -15,7 +15,7 @@ fn main() {
         Err(e) => panic!("failed to load branches: {}", e),
     };
 
-    let mut selections: Vec<String> = branches.into_iter()
+    let selections: Vec<String> = branches.into_iter()
         .map(|branch| {
             branch.unwrap().0.name().unwrap().unwrap().to_string()
         })
@@ -26,15 +26,13 @@ fn main() {
         std::process::exit(1);
     }
 
-    selections.sort();
-    let selection = Select::with_theme(&ColorfulTheme::default())
+    let selection = Sort::with_theme(&ColorfulTheme::default())
         .with_prompt("switch to:")
-        .default(0)
         .items(&selections[..])
         .interact()
         .unwrap();
 
-    let branch_name = selections[selection].as_str();
+    let branch_name = selections[selection[0]].as_str();
     match repo.set_head(&("refs/heads/".to_owned() + branch_name)) {
         Ok(_) => (),
         Err(e) => panic!("failed to change branch: {}", e),
