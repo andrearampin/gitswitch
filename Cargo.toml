@@ -1,6 +1,6 @@
 [package]
 name = "gitswitch"
-description = "A small util for switching git branch."
+description = "Small util for switching git branch in Rust."
 version = "0.0.1"
 edition = "2018"
 authors = ["Andrea Rampin <andrea.rampin@uber.com>"]
