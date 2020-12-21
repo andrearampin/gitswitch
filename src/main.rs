@@ -12,23 +12,27 @@ fn main() {
         Err(e) => panic!("failed to load branches: {}", e),
     };
 
-    // let selections: Vec<String> = branches.into_iter()
-    //     .map(|branch| branch.unwrap().0.name().unwrap().unwrap().to_string())
-    //     .collect();
+    let selections: Vec<String> = branches.into_iter()
+        .map(|branch| {
+            branch.unwrap().0.name().unwrap().unwrap().to_string()
+        })
+        .collect();
 
-    let selections = &[
-        "Ice Cream",
-        "Vanilla Cupcake",
-        "Chocolate Muffin",
-        "A Pile of sweet, sweet mustard",
-    ];
+    if selections.len() == 0 {
+        println!("[No branches] Are you in a git repository?");
+        std::process::exit(1);
+    }
 
     let selection = Select::with_theme(&ColorfulTheme::default())
-        .with_prompt("Pick your flavor")
+        .with_prompt("Switch to:")
         .default(0)
         .items(&selections[..])
         .interact()
         .unwrap();
 
-    println!("Enjoy your {}!", selections[selection]);
+    let branch_name = selections[selection].as_str();
+    match repo.set_head(&("refs/heads/".to_owned() + branch_name)) {
+        Ok(_) => (),
+        Err(e) => panic!("failed to change branch: {}", e),
+    }
 }
