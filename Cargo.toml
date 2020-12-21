@@ -1,0 +1,9 @@
+[package]
+name = "gitswitch"
+version = "0.1.0"
+authors = ["Andrea Rampin <andrea.rampin@uber.com>"]
+edition = "2018"
+
+[dependencies]
+dialoguer = "0.7.1"
+git2 = "0.13.13"
