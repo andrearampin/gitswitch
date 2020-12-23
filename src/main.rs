@@ -1,4 +1,4 @@
-use dialoguer::{theme::ColorfulTheme, Sort};
+use dialoguer::{theme::ColorfulTheme, Select};
 use git2::{Repository, BranchType};
 
 fn main() {
@@ -26,13 +26,13 @@ fn main() {
         std::process::exit(1);
     }
 
-    let selection = Sort::with_theme(&ColorfulTheme::default())
+    let selection = Select::with_theme(&ColorfulTheme::default())
         .with_prompt("switch to:")
         .items(&selections[..])
         .interact()
         .unwrap();
 
-    let branch_name = selections[selection[0]].as_str();
+    let branch_name = selections[selection].as_str();
     match repo.set_head(&("refs/heads/".to_owned() + branch_name)) {
         Ok(_) => (),
         Err(e) => panic!("failed to change branch: {}", e),
