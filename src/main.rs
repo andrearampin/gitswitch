@@ -1,5 +1,6 @@
 use dialoguer::{theme::ColorfulTheme, Select};
 use git2::{Repository, BranchType};
+use std::process::Command;
 
 fn main() {
     let repo = match Repository::open(".") {
@@ -33,7 +34,10 @@ fn main() {
         .unwrap();
 
     let branch_name = selections[selection].as_str();
-    match repo.set_head(&("refs/heads/".to_owned() + branch_name)) {
+
+    match Command::new("git")
+        .args(&["checkout", branch_name])
+        .output() {
         Ok(_) => (),
         Err(e) => panic!("failed to change branch: {}", e),
     }
